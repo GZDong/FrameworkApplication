@@ -4,12 +4,20 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.gzd.example.frameworkapplication.bean.Image;
 import com.gzd.example.frameworkapplication.interfaceofretrofit2.Image_Interface;
+import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.Callable;
 
+import io.reactivex.Observable;
+import io.reactivex.ObservableEmitter;
+import io.reactivex.ObservableOnSubscribe;
+import io.reactivex.Observer;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Consumer;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
@@ -29,6 +37,7 @@ public class ImageModel {
         retrofit = new Retrofit.Builder()
                 .baseUrl("www.gzd.com")
                 .addConverterFactory(GsonConverterFactory.create())
+                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .build();
         image_interface = retrofit.create(Image_Interface.class);
     }
@@ -95,5 +104,147 @@ public class ImageModel {
                 listener.onError();
             }
         });
+    }
+
+    public void deleteImage(DataListener<Image> listener){
+        Observable<Image> observable = Observable.create(new ObservableOnSubscribe<Image>() {
+            @Override
+            public void subscribe(ObservableEmitter<Image> emitter) throws Exception {
+                emitter.onNext(new Image());
+                emitter.onComplete();
+            }
+        });
+
+        Observer<Image> observer = new Observer<Image>() {
+            @Override
+            public void onSubscribe(Disposable d) {
+
+            }
+
+            @Override
+            public void onNext(Image image) {
+                image.getStatus();
+            }
+
+            @Override
+            public void onError(Throwable e) {
+
+            }
+
+            @Override
+            public void onComplete() {
+
+            }
+        };
+
+        observable.subscribe(observer);
+
+
+        Observable.create(new ObservableOnSubscribe<Image>() {
+            @Override
+            public void subscribe(ObservableEmitter<Image> emitter) throws Exception {
+                emitter.onNext(new Image());
+            }
+        }).subscribe(new Observer<Image>() {
+            @Override
+            public void onSubscribe(Disposable d) {
+
+            }
+
+            @Override
+            public void onNext(Image image) {
+                image.getStatus();
+            }
+
+            @Override
+            public void onError(Throwable e) {
+
+            }
+
+            @Override
+            public void onComplete() {
+
+            }
+        });
+
+        Observable.just(new Image()).subscribe(new Observer<Image>() {
+            @Override
+            public void onSubscribe(Disposable d) {
+
+            }
+
+            @Override
+            public void onNext(Image image) {
+
+            }
+
+            @Override
+            public void onError(Throwable e) {
+
+            }
+
+            @Override
+            public void onComplete() {
+
+            }
+        });
+        List<Image> images = new ArrayList<>();
+        Observable.fromArray(images)
+                .subscribe(new Observer<List<Image>>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(List<Image> images) {
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
+
+        Observable.fromCallable(new Callable<Image>() {
+            @Override
+            public Image call() throws Exception {
+                return new Image();
+            }
+        }).subscribe(new Consumer<Image>() {
+            @Override
+            public void accept(Image image) throws Exception {
+
+            }
+        });
+
+        Observable.fromIterable(images)
+                .subscribe(new Observer<Image>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(Image image) {
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
     }
 }
