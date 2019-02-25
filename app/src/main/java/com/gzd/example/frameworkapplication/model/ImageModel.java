@@ -1,5 +1,7 @@
 package com.gzd.example.frameworkapplication.model;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.gzd.example.frameworkapplication.bean.Image;
 import com.gzd.example.frameworkapplication.interfaceofretrofit2.Image_Interface;
 
@@ -82,6 +84,9 @@ public class ImageModel {
         addCall.enqueue(new Callback<Image>() {
             @Override
             public void onResponse(Call<Image> call, Response<Image> response) {
+                String json = "from server";
+                Gson gson = new Gson();
+                List<Image> images = gson.fromJson(json,new TypeToken<List<Image>>(){}.getType());
                 listener.onFinish(response.body());
             }
 
